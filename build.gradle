@@ -13,6 +13,7 @@ ext {
     set('lombokVersion', '1.18.22')
     set('assertJVersion', '3.21.0')
     set('junitVersion', '5.9.1')
+    set('javafakerVersion', '1.0.2')
 }
 
 dependencies {
@@ -24,6 +25,9 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation "org.assertj:assertj-core:$assertJVersion"
+
+    implementation "com.github.javafaker:javafaker:$javafakerVersion"
+    testImplementation "com.github.javafaker:javafaker:$javafakerVersion"
 }
 
 test {
