@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'ru.multa.entia'
-version = '0.0.1-SNAPSHOT'
+version = '0.1'
 
 repositories {
     mavenCentral()
@@ -12,14 +12,12 @@ repositories {
 ext {
     set('lombokVersion', '1.18.22')
     set('assertJVersion', '3.21.0')
-//    set('junitVersion', '5.9.1')
     set('junitVersion', '5.8.2')
     set('javafakerVersion', '1.0.2')
 }
 
 dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:5.10.0"
-//    testImplementation "org.junit.jupiter:junit-jupiter-params:5.10.0"
 
     testImplementation "org.projectlombok:lombok:$lombokVersion"
     implementation "org.projectlombok:lombok:$lombokVersion"
