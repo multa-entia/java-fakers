@@ -30,6 +30,23 @@ public class DefaultStringFaker implements StringFaker {
 
     @Override
     public String custom(String setting) {
+
+        //< move to ???
+//        String template = "\\[.+\\]\\{[0-9]+:[0-9]+\\}";
+//        Pattern pattern = Pattern.compile(template);
+//
+//        Matcher matcher = pattern.matcher("[abc]{1:10}----");
+//
+//        System.out.println(matcher.groupCount());
+//
+//        int x = 0;
+//        while (matcher.find()){
+//            System.out.println(matcher.start());
+//            System.out.println(matcher.end());
+//            x++;
+//        }
+//        System.out.println(x);
+
         // TODO: 17.09.2023 impl
         return null;
     }
