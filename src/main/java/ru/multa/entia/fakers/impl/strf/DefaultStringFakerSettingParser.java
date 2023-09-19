@@ -3,7 +3,9 @@ package ru.multa.entia.fakers.impl.strf;
 import ru.multa.entia.fakers.api.strf.StringFakerSetting;
 import ru.multa.entia.fakers.api.strf.StringFakerSettingParser;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DefaultStringFakerSettingParser implements StringFakerSettingParser {
     public static final int MIN_LEN = 1;
@@ -33,7 +35,7 @@ public class DefaultStringFakerSettingParser implements StringFakerSettingParser
 
             try {
                 int value = Integer.parseInt(split[1]);
-                maxLen = value > 0 ? maxLen : MAX_LEN;
+                maxLen = value > 0 ? value : MAX_LEN;
             } catch (Exception ignored) {}
 
             if (minLen > maxLen){
@@ -45,27 +47,34 @@ public class DefaultStringFakerSettingParser implements StringFakerSettingParser
     }
 
     private int[] calculateCharCodes(final String charSubstring) {
-        String line = charSubstring;
+        ArrayList<Character> list = new ArrayList<>();
 
-        // TODO: 18.09.2023 !!!
-        System.out.println(line);
-        boolean dashInBegin = line.charAt(0) == '-';
-        if (dashInBegin){
-            line = line.substring(1);
+        Pattern pattern = Pattern.compile(".-.");
+        Matcher matcher = pattern.matcher(charSubstring);
+        int start = 0;
+        while (matcher.find()){
+            int matcherStart = matcher.start();
+            int matcherEnd = matcher.end() - 1;
+            for (int i = start;  i < matcherStart; i++){
+                list.add(charSubstring.charAt(i));
+                list.add(charSubstring.charAt(i));
+            }
+            list.add(charSubstring.charAt(matcherStart));
+            list.add(charSubstring.charAt(matcherEnd));
+
+            start = matcherEnd + 1;
         }
-        boolean dashInEnd = line.charAt(line.length() - 1) == '-';
-        if (dashInEnd){
-            line = line.substring(0, line.length()-1);
+
+        for (int i = start; i < charSubstring.length(); i++){
+            list.add(charSubstring.charAt(i));
+            list.add(charSubstring.charAt(i));
         }
-        // TODO: 18.09.2023 !!!
-        System.out.println(line);
 
-        String[] split = line.split("-");
-        System.out.println(Arrays.toString(split));
+        int[] result = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = (int) list.get(i);
+        }
 
-
-//        String[] split = charSubstring.split("-");
-//        System.out.println(Arrays.toString(split));
-        return new int[0];
+        return result.length > 0 ? result : new int[]{MIN_CHAR_CODE, MAX_CHAR_CODE};
     }
 }

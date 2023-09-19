@@ -1,6 +1,5 @@
 package ru.multa.entia.fakers.impl.strf;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import ru.multa.entia.fakers.api.strf.StringFakerSetting;
