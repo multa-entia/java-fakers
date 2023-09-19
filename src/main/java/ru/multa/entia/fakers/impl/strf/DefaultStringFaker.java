@@ -16,6 +16,9 @@ public class DefaultStringFaker implements StringFaker {
     public String random() {
         // TODO: 17.09.2023 impl
         /*
+
+        text [wwf]{wefwef} qenkjefb []{} adqdqwd
+
         		int length = core.number().numberBetween(MIN_LEN, MAX_LEN + 1);
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < length; i++) {
@@ -28,28 +31,29 @@ public class DefaultStringFaker implements StringFaker {
         return null;
     }
 
-    @Override
-    public String custom(String setting) {
-
-        //< move to ???
-//        String template = "\\[.+\\]\\{[0-9]+:[0-9]+\\}";
-//        Pattern pattern = Pattern.compile(template);
+    // TODO: 19.09.2023 del
+//    @Override
+//    public String custom(String setting) {
 //
-//        Matcher matcher = pattern.matcher("[abc]{1:10}----");
+//        //< move to ???
+////        String template = "\\[.+\\]\\{[0-9]+:[0-9]+\\}";
+////        Pattern pattern = Pattern.compile(template);
+////
+////        Matcher matcher = pattern.matcher("[abc]{1:10}----");
+////
+////        System.out.println(matcher.groupCount());
+////
+////        int x = 0;
+////        while (matcher.find()){
+////            System.out.println(matcher.start());
+////            System.out.println(matcher.end());
+////            x++;
+////        }
+////        System.out.println(x);
 //
-//        System.out.println(matcher.groupCount());
-//
-//        int x = 0;
-//        while (matcher.find()){
-//            System.out.println(matcher.start());
-//            System.out.println(matcher.end());
-//            x++;
-//        }
-//        System.out.println(x);
-
-        // TODO: 17.09.2023 impl
-        return null;
-    }
+//        // TODO: 17.09.2023 impl
+//        return null;
+//    }
 
     @Override
     public String fromTemplate(String template) {
