@@ -1,5 +1,6 @@
 package ru.multa.entia.fakers.impl.strf;
 
+import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,6 +22,28 @@ class DefaultStringFakerSettingParserTest {
         assertThat(result[1]).isEqualTo(expectedMax);
     }
 
+    @ParameterizedTest
+    @CsvFileSource(resources = "shouldCheckCharCodesCalculator.csv")
+    void shouldCheckCharCodesCalculator(String line, String expectedLine) {
+        int[] expected = calculateExpectedCharCodes(expectedLine);
+        int[] result = new DefaultStringFakerSettingParser.CharCodesCalculator().apply(line);
+
+        assertThat(result).isEqualTo(expected);
+    }
+
+    private int[] calculateExpectedCharCodes(String line) {
+        String[] split = line.split("-");
+        int[] charCodes = new int[split.length];
+        for (int i = 0; i < split.length; i++) {
+            try{
+                charCodes[i] = Integer.parseInt(split[i]);
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+        return charCodes;
+    }
 
     // TODO: 21.09.2023 !!!
 //    @ParameterizedTest

@@ -70,39 +70,35 @@ public class DefaultStringFakerSettingParser implements StringFakerSettingParser
     public static class CharCodesCalculator implements Function<String, int[]> {
         @Override
         public int[] apply(final String line) {
-            return new int[0];
+            ArrayList<Character> list = new ArrayList<>();
+
+            Pattern pattern = Pattern.compile(".-.");
+            Matcher matcher = pattern.matcher(line);
+            int start = 0;
+            while (matcher.find()){
+                int matcherStart = matcher.start();
+                int matcherEnd = matcher.end() - 1;
+                for (int i = start;  i < matcherStart; i++){
+                    list.add(line.charAt(i));
+                    list.add(line.charAt(i));
+                }
+                list.add(line.charAt(matcherStart));
+                list.add(line.charAt(matcherEnd));
+
+                start = matcherEnd + 1;
+            }
+
+            for (int i = start; i < line.length(); i++){
+                list.add(line.charAt(i));
+                list.add(line.charAt(i));
+            }
+
+            int[] result = new int[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                result[i] = (int) list.get(i);
+            }
+
+            return result;
         }
     }
-    // TODO: 21.09.2023 !!!
-//    private int[] calculateCharCodes(final String charSubstring) {
-//        ArrayList<Character> list = new ArrayList<>();
-//
-//        Pattern pattern = Pattern.compile(".-.");
-//        Matcher matcher = pattern.matcher(charSubstring);
-//        int start = 0;
-//        while (matcher.find()){
-//            int matcherStart = matcher.start();
-//            int matcherEnd = matcher.end() - 1;
-//            for (int i = start;  i < matcherStart; i++){
-//                list.add(charSubstring.charAt(i));
-//                list.add(charSubstring.charAt(i));
-//            }
-//            list.add(charSubstring.charAt(matcherStart));
-//            list.add(charSubstring.charAt(matcherEnd));
-//
-//            start = matcherEnd + 1;
-//        }
-//
-//        for (int i = start; i < charSubstring.length(); i++){
-//            list.add(charSubstring.charAt(i));
-//            list.add(charSubstring.charAt(i));
-//        }
-//
-//        int[] result = new int[list.size()];
-//        for (int i = 0; i < list.size(); i++) {
-//            result[i] = (int) list.get(i);
-//        }
-//
-//        return result.length > 0 ? result : new int[]{MIN_CHAR_CODE, MAX_CHAR_CODE};
-//    }
 }
