@@ -10,7 +10,7 @@ public class DefaultStringFaker implements StringFaker {
 //    public static final int MIN_CHAR_CODE = 32;
 //    public static final int MAX_CHAR_CODE = 126;
 
-    private static Faker faker = new Faker();
+//    private static Faker faker = new Faker();
 
     @Override
     public String random() {
@@ -30,30 +30,6 @@ public class DefaultStringFaker implements StringFaker {
          */
         return null;
     }
-
-    // TODO: 19.09.2023 del
-//    @Override
-//    public String custom(String setting) {
-//
-//        //< move to ???
-////        String template = "\\[.+\\]\\{[0-9]+:[0-9]+\\}";
-////        Pattern pattern = Pattern.compile(template);
-////
-////        Matcher matcher = pattern.matcher("[abc]{1:10}----");
-////
-////        System.out.println(matcher.groupCount());
-////
-////        int x = 0;
-////        while (matcher.find()){
-////            System.out.println(matcher.start());
-////            System.out.println(matcher.end());
-////            x++;
-////        }
-////        System.out.println(x);
-//
-//        // TODO: 17.09.2023 impl
-//        return null;
-//    }
 
     @Override
     public String fromTemplate(String template) {
