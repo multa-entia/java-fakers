@@ -13,6 +13,8 @@ public class DefaultStringFakerTemplateParser implements StringFakerTemplatePars
     private static final String REGEX = "\\[[^{}]+\\]\\{[0-9]+:[0-9]+\\}";
     private static final String LABEL_TEMPLATE = "<@label_%s>";
 
+
+    // TODO: 21.09.2023 use Fyunction which return StringFakerSettingParser
     private final StringFakerSettingParser settingParser;
 
     public DefaultStringFakerTemplateParser() {
