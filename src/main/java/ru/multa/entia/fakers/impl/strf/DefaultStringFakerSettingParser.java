@@ -10,11 +10,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DefaultStringFakerSettingParser implements StringFakerSettingParser {
-    // TODO: 21.09.2023 !!!
-//    public static final int MIN_LEN = 1;
-//    public static final int MAX_LEN = 10;
-//    public static final int MIN_CHAR_CODE = 32;
-//    public static final int MAX_CHAR_CODE = 126;
+    private static final String MIN_TEMPLATE = "[a]{1:2}";
+    private static final int TEMPLATE_MIN_LENGTH = MIN_TEMPLATE.length();
+    private static final String PART_DELIMITER = "]\\{";
+    private static final Function<String, int[]> SUBSTRING_BORDER_FUNC = line -> {
+        return new int[]{1, line.length()-1};
+    };
 
     private final Function<List<int[]>, StringFakerSetting> stringFakerSettingCreator;
     private final Function<String, int[]> lengthsCalculator;
@@ -38,15 +39,23 @@ public class DefaultStringFakerSettingParser implements StringFakerSettingParser
 
     @Override
     public StringFakerSetting parse(final String line) {
-        return null;
+        if (line == null || line.length() < TEMPLATE_MIN_LENGTH){
+            return createDefaultSetting();
+        }
 
-        // TODO: 21.09.2023 !!!
-//        String[] split = line.substring(1, line.length() - 1).split("]\\{");
-//        String charSubstring = split[0];
-//        String lenSubstring = split[1];
-//
-//        int[] lens = calculateLens(lenSubstring);
-//        return new DefaultStringFakerSetting(lens[0], lens[1], calculateCharCodes(charSubstring));
+        int[] borders = SUBSTRING_BORDER_FUNC.apply(line);
+        String[] parts = line.substring(borders[0], borders[1]).split(PART_DELIMITER);
+        if (parts.length != 2){
+            return createDefaultSetting();
+        }
+
+        int[] lens = lengthsCalculator.apply(parts[1]);
+        int[] charCodes = charCodesCalculator.apply(parts[0]);
+        return stringFakerSettingCreator.apply(List.of(lens, charCodes));
+    }
+
+    private StringFakerSetting createDefaultSetting() {
+        return new DefaultStringFakerSetting(0, 0, null);
     }
 
     public static class LengthsCalculator implements Function<String, int[]>{

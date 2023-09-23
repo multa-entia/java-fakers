@@ -1,13 +1,14 @@
 package ru.multa.entia.fakers.impl.strf;
 
-import lombok.SneakyThrows;
-import org.assertj.core.api.Assertions;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import ru.multa.entia.fakers.api.strf.StringFakerSetting;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,39 +46,69 @@ class DefaultStringFakerSettingParserTest {
         return charCodes;
     }
 
-    // TODO: 21.09.2023 !!!
-//    @ParameterizedTest
-//    @CsvFileSource(resources = "shouldCheckParsing.csv")
-//    void shouldCheckParsing(String template, String ranges, int expectedMinLen, int expectedMaxLen) {
-//        int[] expectedCharCodes = calculateCharCodes(ranges);
-//
-//        StringFakerSetting setting = new DefaultStringFakerSettingParser().parse(template);
-//        assertThat(setting.minLen()).isEqualTo(expectedMinLen);
-//        assertThat(setting.maxLen()).isEqualTo(expectedMaxLen);
-//        assertThat(setting.charCodes()).isEqualTo(expectedCharCodes);
-//    }
-//
-//    private int[] calculateCharCodes(String ranges) {
-//        ArrayList<Integer> list = new ArrayList<>();
-//        String[] splitRange = ranges.split("&");
-//        for (String item : splitRange) {
-//            int length = item.length();
-//            switch (length){
-//                case 1:
-//                    list.add((int)item.charAt(0));
-//                    list.add((int)item.charAt(0));
-//                    break;
-//                case 3:
-//                    list.add((int)item.charAt(0));
-//                    list.add((int)item.charAt(2));
-//                    break;
-//            }
-//        }
-//
-//        int[] result = new int[list.size()];
-//        for (int i = 0; i < list.size(); i++) {
-//            result[i] = list.get(i);
-//        }
-//        return result;
-//    }
+    @Test
+    void shouldCheckParsing_ifLineNull() {
+        StringFakerSetting result = new DefaultStringFakerSettingParser().parse(null);
+        assertThat(result).isEqualTo(new DefaultStringFakerSetting(0,0, null));
+    }
+
+    @Test
+    void shouldCheckParsing_ifLineIsShort() {
+        StringFakerSetting result = new DefaultStringFakerSettingParser().parse("");
+        assertThat(result).isEqualTo(new DefaultStringFakerSetting(0,0, null));
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "shouldCheckParsing_ifLineHasBadFormat.csv")
+    void shouldCheckParsing_ifLineHasBadFormat(String line) {
+        StringFakerSetting result = new DefaultStringFakerSettingParser().parse(line);
+        assertThat(result).isEqualTo(new DefaultStringFakerSetting(0,0, null));
+    }
+
+    @Test
+    void shouldCheckParsing() {
+        final int expectedMinLen = 1;
+        final int expectedMaxLen = 10;
+        final char ch00 = '0';
+        final char ch10 = '2';
+        final char ch11 = 'd';
+        final String charCodesPart = String.format("%s%s-%s", ch00, ch10, ch11);
+        final String lensPart = String.format("%s:%s", expectedMinLen, expectedMaxLen);
+        final String template = String.format("[%s]{%s}", charCodesPart, lensPart);
+        final int[] expectedLens = {expectedMinLen, expectedMaxLen};
+        final int[] expectedCharCodes = {ch00, ch00, ch10, ch11};
+
+        Function<List<int[]>, StringFakerSetting> stringFakerSettingCreator = new Function<List<int[]>, StringFakerSetting>() {
+            @Override
+            public StringFakerSetting apply(List<int[]> list) {
+                return new DefaultStringFakerSetting(list.get(0)[0], list.get(0)[1], list.get(1));
+            }
+        };
+
+        TestCalculator lengthsCalculator = new TestCalculator(expectedLens);
+        TestCalculator charCodesCalculator = new TestCalculator(expectedCharCodes);
+        StringFakerSetting result = new DefaultStringFakerSettingParser(
+                stringFakerSettingCreator,
+                lengthsCalculator,
+                charCodesCalculator
+        ).parse(template);
+
+        assertThat(lengthsCalculator.getLine()).isEqualTo(lensPart);
+        assertThat(charCodesCalculator.getLine()).isEqualTo(charCodesPart);
+        assertThat(result).isEqualTo(new DefaultStringFakerSetting(expectedMinLen, expectedMaxLen, expectedCharCodes));
+    }
+
+    @RequiredArgsConstructor
+    private static class TestCalculator implements Function<String, int[]> {
+        private final int[] ints;
+
+        @Getter
+        private String line;
+
+        @Override
+        public int[] apply(String line) {
+            this.line = line;
+            return ints;
+        }
+    }
 }

@@ -19,4 +19,24 @@ record DefaultStringFakerSetting(int minLen, int maxLen, int[] charCodes) implem
             charCodes = Arrays.copyOf(charCodes, charCodes.length / 2 * 2);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefaultStringFakerSetting setting = (DefaultStringFakerSetting) o;
+
+        if (minLen != setting.minLen) return false;
+        if (maxLen != setting.maxLen) return false;
+        return Arrays.equals(charCodes, setting.charCodes);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = minLen;
+        result = 31 * result + maxLen;
+        result = 31 * result + Arrays.hashCode(charCodes);
+        return result;
+    }
 }
