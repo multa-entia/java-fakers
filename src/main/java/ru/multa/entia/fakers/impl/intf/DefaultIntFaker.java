@@ -7,7 +7,7 @@ public class DefaultIntFaker implements IntFaker {
     private final Faker faker = new Faker();
 
     @Override
-    public Integer random() {
+    public Integer random(Object... args) {
         return faker.number().randomDigit();
     }
 

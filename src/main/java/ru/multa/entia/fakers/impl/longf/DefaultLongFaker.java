@@ -7,7 +7,7 @@ public class DefaultLongFaker implements LongFaker {
     private final Faker faker = new Faker();
 
     @Override
-    public Long random() {
+    public Long random(Object... args) {
         return faker.number().randomNumber();
     }
 

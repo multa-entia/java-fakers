@@ -1,39 +1,51 @@
 package ru.multa.entia.fakers.impl.strf;
 
-import com.github.javafaker.Faker;
 import ru.multa.entia.fakers.api.strf.StringFaker;
+import ru.multa.entia.fakers.api.strf.StringFakerGenerator;
+import ru.multa.entia.fakers.api.strf.StringFakerSetting;
+import ru.multa.entia.fakers.api.strf.StringFakerTemplate;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class DefaultStringFaker implements StringFaker {
-    // TODO: 17.09.2023 ???
-//    public static final int MIN_LEN = 1;
-//    public static final int MAX_LEN = 10;
-//    public static final int MIN_CHAR_CODE = 32;
-//    public static final int MAX_CHAR_CODE = 126;
+    public static final int MIN_LEN = 5;
+    public static final int MAX_LEN = 10;
 
-//    private static Faker faker = new Faker();
+    private final Supplier<StringFakerGenerator> generatorSupplier;
+
+    public DefaultStringFaker(Supplier<StringFakerGenerator> generatorSupplier) {
+        this.generatorSupplier = generatorSupplier;
+    }
+
+    public DefaultStringFaker() {
+        this.generatorSupplier = DefaultStringFakerGenerator::new;
+    }
 
     @Override
-    public String random() {
-        // TODO: 17.09.2023 impl
-        /*
+    public String random(Object... args) {
+        int minLen = args.length > 0 && args[0].getClass().equals(Integer.class) && ((int)args[0]) > 0
+                ? (int) args[0]
+                : MIN_LEN;
+        int maxLen = args.length > 1 && args[1].getClass().equals(Integer.class) && ((int)args[1]) > 0
+                ? (int) args[1]
+                : MAX_LEN;
 
-        text [wwf]{wefwef} qenkjefb []{} adqdqwd
-
-        		int length = core.number().numberBetween(MIN_LEN, MAX_LEN + 1);
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < length; i++) {
-			builder.append((char) core.number().numberBetween(MIN_CHAR_CODE, MAX_CHAR_CODE + 1));
-		}
-
-		return builder.toString();
-
-         */
-        return null;
+        DefaultStringFakerSetting setting = new DefaultStringFakerSetting(minLen, maxLen, null);
+        return generatorSupplier.get().generate(setting);
     }
 
     @Override
     public String fromTemplate(String template) {
-        // TODO: 17.09.2023 impl
-        return null;
+        StringFakerGenerator generator = generatorSupplier.get();
+        StringFakerTemplate parsedTemplate = new DefaultStringFakerTemplateParser().parse(template);
+        String result = parsedTemplate.template();
+        for (Map.Entry<String, StringFakerSetting> entry : parsedTemplate.settings().entrySet()) {
+            String oldSub = entry.getKey();
+            String newSub = generator.generate(entry.getValue());
+            result = result.replace(oldSub, newSub);
+        }
+
+        return result;
     }
 }

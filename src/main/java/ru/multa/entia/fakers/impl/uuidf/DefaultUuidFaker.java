@@ -9,7 +9,7 @@ public class DefaultUuidFaker implements UuidFaker {
     private final Faker faker = new Faker();
 
     @Override
-    public UUID random() {
+    public UUID random(Object... args) {
         return UUID.randomUUID();
     }
 }

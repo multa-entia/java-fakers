@@ -1,0 +1,6 @@
+-1,-1,DefaultStringFaker.min,DefaultStringFaker.max
+1,-1,1,DefaultStringFaker.max
+-1,1,DefaultStringFaker.min,5
+1,1,1,1
+1,10,1,10
+10,1,10,10

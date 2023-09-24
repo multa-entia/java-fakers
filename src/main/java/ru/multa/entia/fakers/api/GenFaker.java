@@ -1,5 +1,5 @@
 package ru.multa.entia.fakers.api;
 
 public interface GenFaker<T> {
-    T random();
+    T random(Object... args);
 }
