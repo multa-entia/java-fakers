@@ -1,5 +1,10 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+}
+
+java {
+    withSourcesJar()
 }
 
 group = 'ru.multa.entia'
@@ -12,12 +17,12 @@ repositories {
 ext {
     set('lombokVersion', '1.18.22')
     set('assertJVersion', '3.21.0')
-    set('junitVersion', '5.8.2')
+    set('junitVersion', '5.10.0')
     set('javafakerVersion', '1.0.2')
 }
 
 dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter:5.10.0"
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
 
     testImplementation "org.projectlombok:lombok:$lombokVersion"
     implementation "org.projectlombok:lombok:$lombokVersion"
@@ -28,6 +33,12 @@ dependencies {
 
     implementation "com.github.javafaker:javafaker:$javafakerVersion"
     testImplementation "com.github.javafaker:javafaker:$javafakerVersion"
+}
+
+publishing.publications {
+    mavenJava(MavenPublication) {
+        from components.java
+    }
 }
 
 test {
