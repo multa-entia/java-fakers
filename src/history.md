@@ -1,3 +1,7 @@
+# Version 0.2
+
+- DefaultBoolFaker is added 
+
 # Version 0.1
 
 - DefaultIntFaker is added
