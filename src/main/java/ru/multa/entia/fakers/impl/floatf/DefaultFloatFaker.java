@@ -4,51 +4,22 @@ import com.github.javafaker.Faker;
 import ru.multa.entia.fakers.api.floatf.FloatFaker;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class DefaultFloatFaker implements FloatFaker {
+    private static final int MIN_SCALE = 0;
+    private static final int MAX_SCALE = 30;
+
     private final Faker faker = new Faker();
 
     @Override
     public Float random(final Object... args) {
         float range = (float) Long.MAX_VALUE - (float) Long.MIN_VALUE;
         float chunkCount = (float) Math.sqrt(Math.abs(range));
-        float chunkSize = chunkCount;
         long randomChunk = faker.random().nextLong((long) chunkCount);
-        float chunkStart = (float) Long.MIN_VALUE + (float) randomChunk * chunkSize;
+        float chunkStart = (float) Long.MIN_VALUE + (float) randomChunk * chunkCount;
         float adj = chunkStart * (float) faker.random().nextInt(Integer.MAX_VALUE);
 
-//        RoundingMode
-        return new BigDecimal(chunkStart + adj)
-                .setScale(faker.random().nextInt(0, 10), RoundingMode.UNNECESSARY)
-                .floatValue();
-
-//                double adj = chunkSize * this.faker.random().nextDouble();
-//                return new BigDecimal(chunkStart + adj);
-
-//        faker.number().randomDouble()
-//        return this.decimalBetween(min, max).setScale(maxNumberOfDecimals, 5).doubleValue();
-
-                // TODO: !!!
-//        private BigDecimal decimalBetween(long min, long max) {
-//            if (min == max) {
-//                return new BigDecimal(min);
-//            } else {
-//                long trueMin = Math.min(min, max);
-//                long trueMax = Math.max(min, max);
-//                double range = (double)trueMax - (double)trueMin;
-//                double chunkCount = Math.sqrt(Math.abs(range));
-//                double chunkSize = chunkCount;
-//                long randomChunk = this.faker.random().nextLong((long)chunkCount);
-//                double chunkStart = (double)trueMin + (double)randomChunk * chunkSize;
-//                double adj = chunkSize * this.faker.random().nextDouble();
-//                return new BigDecimal(chunkStart + adj);
-//            }
-//        }
-
-//        throw new RuntimeException("random");
-        // TODO: !!!
-//        return null;
+        return new BigDecimal(chunkStart + adj).floatValue() / (float) Math.pow(10.0f, faker.random().nextInt(MIN_SCALE, MAX_SCALE));
     }
 
     @Override
