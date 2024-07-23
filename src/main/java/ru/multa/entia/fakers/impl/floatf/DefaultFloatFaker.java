@@ -59,9 +59,8 @@ public class DefaultFloatFaker implements FloatFaker {
 
     private Float compute(float base, float range, int depth) {
         float newRange = range / DEFAULT_PART_SIZE;
-        int steps = faker.number().numberBetween(0, DEFAULT_PART_SIZE);
-        float tail = newRange * (float) steps;
-        float b =  base + tail;
-        return --depth > 0 ? compute(b, newRange, depth) : b;
+        float tail = newRange * (float) faker.number().numberBetween(0, DEFAULT_PART_SIZE);
+        base += tail;
+        return --depth > 0 ? compute(base, newRange, depth) : base;
     }
 }
