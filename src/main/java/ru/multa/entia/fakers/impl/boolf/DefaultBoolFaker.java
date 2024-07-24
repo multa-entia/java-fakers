@@ -7,7 +7,7 @@ public class DefaultBoolFaker implements BoolFaker {
     private final Faker faker = new Faker();
 
     @Override
-    public Boolean random(Object... args) {
+    public Boolean random(final Object... args) {
         return faker.number().randomDigit() % 2 == 0;
     }
 }

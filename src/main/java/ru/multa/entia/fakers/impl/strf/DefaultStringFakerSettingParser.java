@@ -25,13 +25,13 @@ public class DefaultStringFakerSettingParser implements StringFakerSettingParser
         this(list -> { return new DefaultStringFakerSetting(list.get(0)[0], list.get(0)[1], list.get(1)); });
     }
 
-    public DefaultStringFakerSettingParser(Function<List<int[]>, StringFakerSetting> stringFakerSettingCreator) {
+    public DefaultStringFakerSettingParser(final Function<List<int[]>, StringFakerSetting> stringFakerSettingCreator) {
         this(stringFakerSettingCreator, new LengthsCalculator(), new CharCodesCalculator());
     }
 
-    public DefaultStringFakerSettingParser(Function<List<int[]>, StringFakerSetting> stringFakerSettingCreator,
-                                           Function<String, int[]> lengthsCalculator,
-                                           Function<String, int[]> charCodesCalculator) {
+    public DefaultStringFakerSettingParser(final Function<List<int[]>, StringFakerSetting> stringFakerSettingCreator,
+                                           final Function<String, int[]> lengthsCalculator,
+                                           final Function<String, int[]> charCodesCalculator) {
         this.stringFakerSettingCreator = stringFakerSettingCreator;
         this.lengthsCalculator = lengthsCalculator;
         this.charCodesCalculator = charCodesCalculator;

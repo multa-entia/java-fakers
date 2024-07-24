@@ -10,7 +10,7 @@ public class DefaultStringFakerGenerator implements StringFakerGenerator {
     private final Faker faker = new Faker();
 
     @Override
-    public String generate(StringFakerSetting setting) {
+    public String generate(final StringFakerSetting setting) {
         int[] charCodes = setting.charCodes();
         int size = charCodes.length / 2;
         ArrayList<Character> chars = new ArrayList<>();
