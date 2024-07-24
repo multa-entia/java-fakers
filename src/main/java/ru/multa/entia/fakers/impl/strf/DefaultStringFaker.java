@@ -14,7 +14,7 @@ public class DefaultStringFaker implements StringFaker {
 
     private final Supplier<StringFakerGenerator> generatorSupplier;
 
-    public DefaultStringFaker(Supplier<StringFakerGenerator> generatorSupplier) {
+    public DefaultStringFaker(final Supplier<StringFakerGenerator> generatorSupplier) {
         this.generatorSupplier = generatorSupplier;
     }
 
@@ -23,7 +23,7 @@ public class DefaultStringFaker implements StringFaker {
     }
 
     @Override
-    public String random(Object... args) {
+    public String random(final Object... args) {
         int minLen = args.length > 0 && args[0].getClass().equals(Integer.class) && ((int)args[0]) > 0
                 ? (int) args[0]
                 : MIN_LEN;
@@ -36,7 +36,7 @@ public class DefaultStringFaker implements StringFaker {
     }
 
     @Override
-    public String fromTemplate(String template) {
+    public String fromTemplate(final String template) {
         StringFakerGenerator generator = generatorSupplier.get();
         StringFakerTemplate parsedTemplate = new DefaultStringFakerTemplateParser().parse(template);
         String result = parsedTemplate.template();
