@@ -1,3 +1,8 @@
+# Version 0.3
+
+- DefaultFloatFaker is added
+- DefaultDoubleFaker is added
+
 # Version 0.2
 
 - DefaultBoolFaker is added 
